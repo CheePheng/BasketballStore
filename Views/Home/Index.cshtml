@@ -1,0 +1,19 @@
+﻿<div class="text-center">
+    <h1 class="display-4">Welcome To The Basketball Store</h1>
+
+    <a id="microsoft-login" class="microsoft-login-btn" href="https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=3ed46488-5c04-4492-a1b3-c0b7b03d996d&response_type=code&redirect_uri=https://localhost:7200/Basketball&response_mode=query&scope=offline_access%20user.read%20mail.read&state=12345">
+        <img src="/images/ms-symbollockup_signin_light.png" alt="Microsoft Logo" class="logo">
+    </a>
+	<a href="@Url.Action("Login", "Basketball")" class="google-login-btn">
+		<img src="/images/google.png" alt="Google Logo" class="logo">
+	</a>
+</div>
+
+
+<style>
+	.microsoft-login-btn, .google-login-btn {
+		text-decoration: none;
+		color: transparent;
+		display: inline-block;
+	}
+</style>

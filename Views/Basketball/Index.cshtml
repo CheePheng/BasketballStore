@@ -1,0 +1,20 @@
+﻿<!-- Index.cshtml -->
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<h1>Click to look at basketball team.</h1>
+
+<a asp-action="Details" asp-controller="Basketball">View Team Details</a>
+
+
+<br />
+@if (Context.User.Identity.IsAuthenticated)
+{
+    <br />
+    <h3>Welcome @User.Identity.Name</h3>
+
+    <br />
+    <a asp-controller="Basketball" asp-action="Logout">Logout</a>
+}

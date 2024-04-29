@@ -1,0 +1,25 @@
+﻿<head >
+<style >
+.microsoft-login-btn {
+    display: inline-block;
+    background-color: #0078d4;
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.microsoft-login-btn:hover {
+    background-color: #005a9e;
+}
+
+.logo {
+    width: 20px; /* Adjust as needed */
+    height: auto; /* Maintain aspect ratio */
+    margin-right: 10px; /* Add space between logo and text */
+}
+
+</style >
+</head >

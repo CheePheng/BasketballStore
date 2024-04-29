@@ -1,0 +1,43 @@
+﻿<!-- Details.cshtml -->
+@model List<BasketballStore.Models.Team>
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Team Details</h1>
+
+@if (Model != null && Model.Count > 0)
+{
+    @foreach (var team in Model)
+    {
+        <div>
+            <dl class="row">
+                <dt class="col-sm-2">
+                    Team Name:
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(modelItem => team.Name)
+                </dd>
+                <dt class="col-sm-2">
+                    Description:
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(modelItem => team.Description)
+                </dd>
+            </dl>
+        </div>
+        <div>
+            <a asp-action="Edit" asp-route-id="@team.TeamId">Edit</a>
+          
+
+        </div>
+        
+        <hr />
+    }
+    <a asp-action="Index" asp-controller="Basketball">Back to Basketball Page</a>
+    <a asp-action="Create" class="btn btn-primary">Create New Team</a>
+}
+else
+{
+    <p>No teams found.</p>
+}
