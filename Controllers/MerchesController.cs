@@ -25,6 +25,11 @@ namespace BasketballStore.Controllers
             return View(await _context.Merch.ToListAsync());
         }
 
+        public async Task<IActionResult> Cart()
+        {
+            return View();
+        }
+
         // GET: Merches/Details/5
         public async Task<IActionResult> Details(int? id)
         {

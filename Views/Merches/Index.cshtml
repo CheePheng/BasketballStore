@@ -3,11 +3,23 @@
 @{
     ViewData["Title"] = "Welcome to the merch store";
 }
+<style>
+    /* Style for cart logo */
+    .cart-logo {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+    }
+</style>
 
 <h1>Welcome to the merch store</h1>
 
+<div class="cart-logo" onclick="location.href='@Url.Action("Cart", "Merches")'">
+    <img src="~/images/cartlogo.png" alt="Cart" width="40" height="40">
+</div>
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-info">Create New</a>
 </p>
 <table class="table">
     <thead>
@@ -38,12 +50,27 @@
                     @Html.DisplayFor(modelItem => item.Price)
                 </td>
                 <td>
-                    <form asp-action="AddToCart" method="post">
-                        <input type="hidden" name="id" value="@item.Id" />
-                        <button type="submit" class="btn btn-primary">Add to Cart</button>
-                    </form>
+                    <button type="button" class="btn btn-primary" onclick="addToCart('@item.Id', '@item.Name', '@item.Price')">Add to Cart</button>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+<script>
+    function addToCart(id, name, price) {
+        var cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+
+        var newItem = {
+            id: id,
+            name: name,
+            price: price
+        };
+
+        cartItems.push(newItem);
+
+        localStorage.setItem('cartItems', JSON.stringify(cartItems));
+
+        alert('Item added to cart!');
+    }
+</script>

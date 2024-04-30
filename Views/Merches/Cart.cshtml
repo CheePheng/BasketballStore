@@ -1,5 +1,66 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿<button type="button" onclick="displayCart()" class="btn btn-secondary">View Cart</button>
+
+<div id="cartItemsContainer"></div>
+<button type="button" onclick="clearCart()" class="btn btn-danger">Clear Cart</button>
+
+<a asp-action="Index" class="btn btn-info">Back To Merch Store</a>
+<script>
+    function clearCart() {
+        localStorage.removeItem('cartItems');
+
+        var cartItemsContainer = document.getElementById('cartItemsContainer');
+        cartItemsContainer.innerHTML = '<p>Cart is empty</p>';
+    }
+    function displayCart() {
+        var cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+
+        var cartItemsContainer = document.getElementById('cartItemsContainer');
+
+        cartItemsContainer.innerHTML = '';
+
+        if (cartItems.length > 0) {
+            cartItems.forEach(function (item) {
+                var itemDiv = document.createElement('div');
+
+                itemDiv.innerHTML = '<strong>ID:</strong> ' + item.id + ', <strong>Name:</strong> ' + item.name + ', <strong>Price:</strong> ' + item.price;
+
+                cartItemsContainer.appendChild(itemDiv);
+            });
+        } else {
+            cartItemsContainer.innerHTML = '<p>Cart is empty</p>';
+        }
+    }
+
+    function placeOrder() {
+        let cartItems = JSON.parse(localStorage.getItem('cartItems'));
+
+        // Check if there are items in the cart
+        if (cartItems && cartItems.length > 0) {
+            // Send a request to the server to place the order
+            fetch('/Orders/Create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(cartItems)
+            })
+                .then(response => {
+                    if (response.ok) {
+                        // If the order was successfully placed, clear the cart items from local storage
+                        localStorage.removeItem('cartItems');
+                        alert('Order placed successfully.');
+                    } else {
+                        alert('Failed to place order.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error placing order:', error);
+                    alert('An error occurred while placing the order.');
+                });
+        } else {
+            alert('Cart is empty. Please add items before placing an order.');
+        }
+    }
+
+
+</script>
