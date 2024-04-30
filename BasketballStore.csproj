@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\Products\**" />
+    <Content Remove="Views\Products\**" />
+    <EmbeddedResource Remove="Views\Products\**" />
+    <None Remove="Views\Products\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="wwwroot\images\microsoft_logo.png" />
   </ItemGroup>
 
@@ -27,7 +34,6 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
-    <Folder Include="Views\Products\" />
   </ItemGroup>
 
   <ItemGroup>

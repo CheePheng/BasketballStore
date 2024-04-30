@@ -3,18 +3,59 @@
     ViewData["Title"] = "Index";
 }
 
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title">Basketball Team</h3>
+                </div>
+                <div class="card-body">
+                    <h4 class="card-text">Click to view basketball team details</h4>
+                    <a asp-action="Details" asp-controller="Basketball" class="btn btn-primary">View Team Details</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-<h1>Click to look at basketball team.</h1>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card mt-5">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title">Current Weather</h3>
+                </div>
+                <div class="card-body">
+                    @if (ViewBag.CityName != null)
+                    {
+                        <h4 class="card-subtitle mb-2">@ViewBag.CityName</h4>
+                        @if (ViewBag.WeatherIcon != null)
+                        {
+                            <img src="@ViewBag.WeatherIcon" alt="Weather Icon">
+                        }
+                        <p class="card-text">@ViewBag.WeatherDescription</p>
+                    }
+                    else
+                    {
+                        <p class="card-text text-danger">@ViewBag.Error</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-<a asp-action="Details" asp-controller="Basketball">View Team Details</a>
-
-
-<br />
 @if (Context.User.Identity.IsAuthenticated)
 {
-    <br />
-    <h3>Welcome @User.Identity.Name</h3>
-
-    <br />
-    <a asp-controller="Basketball" asp-action="Logout">Logout</a>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h3 class="text-center">Welcome @User.Identity.Name</h3>
+                <div class="text-center">
+                    <a asp-controller="Basketball" asp-action="Logout" class="btn btn-danger">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
 }

@@ -17,8 +17,39 @@ namespace BasketballStore.Controllers
     {
         public IActionResult Index()
         {
+            // Latitude and longitude for a location (e.g., Belfast, Northern Ireland)
+            string latitude = "53.350140";
+            string longitude = "-6.266155";
+
+            string apiKey = "4df74638b735b56655ce840ff964b63c";
+
+            var client = new RestClient($"https://api.openweathermap.org/data/2.5/");
+
+            // Create a RestRequest
+            var request = new RestRequest($"weather?lat={latitude}&lon={longitude}&appid={apiKey}", Method.Get);
+
+            RestResponse response = client.Execute(request);
+
+            if (response.IsSuccessful)
+            {
+                JObject jsonResponse = JObject.Parse(response.Content);
+
+                string cityName = jsonResponse["name"].ToString();
+                string weatherDescription = jsonResponse["weather"][0]["description"].ToString();
+                string weatherIcon = jsonResponse["weather"][0]["icon"].ToString(); 
+
+                ViewBag.CityName = cityName;
+                ViewBag.WeatherDescription = weatherDescription;
+                ViewBag.WeatherIcon = "https://openweathermap.org/img/w/" + weatherIcon + ".png";
+            }
+            else
+            {
+                ViewBag.Error = "Failed to fetch weather data.";
+            }
+
             return View();
         }
+
 
         public IActionResult AuthorizeUser(string code)
         {

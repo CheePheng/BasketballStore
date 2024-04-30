@@ -10,22 +10,22 @@ using BasketballStore.Models;
 
 namespace BasketballStore.Controllers
 {
-    public class Cart : Controller
+    public class MerchesController : Controller
     {
-        private readonly ProductContext _context;
+        private readonly BasketballStoreContext _context;
 
-        public Cart(ProductContext context)
+        public MerchesController(BasketballStoreContext context)
         {
             _context = context;
         }
 
-        // GET: Cart
+        // GET: Merches
         public async Task<IActionResult> Index()
         {
-            return View(await _context.CartItems.ToListAsync());
+            return View(await _context.Merch.ToListAsync());
         }
 
-        // GET: Cart/Details/5
+        // GET: Merches/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +33,39 @@ namespace BasketballStore.Controllers
                 return NotFound();
             }
 
-            var cartItem = await _context.CartItems
-                .FirstOrDefaultAsync(m => m.CartItemId == id);
-            if (cartItem == null)
+            var merch = await _context.Merch
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (merch == null)
             {
                 return NotFound();
             }
 
-            return View(cartItem);
+            return View(merch);
         }
 
-        // GET: Cart/Create
+        // GET: Merches/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Cart/Add
+        // POST: Merches/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add([Bind("ProductId,Quantity")] CartItem cartItem)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description,Price")] Merch merch)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(cartItem);
+                _context.Add(merch);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(cartItem);
+            return View(merch);
         }
 
-        // GET: Cart/Edit/5
+        // GET: Merches/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +73,22 @@ namespace BasketballStore.Controllers
                 return NotFound();
             }
 
-            var cartItem = await _context.CartItems.FindAsync(id);
-            if (cartItem == null)
+            var merch = await _context.Merch.FindAsync(id);
+            if (merch == null)
             {
                 return NotFound();
             }
-            return View(cartItem);
+            return View(merch);
         }
 
-        // POST: Cart/Edit/5
+        // POST: Merches/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CartItemId,ProductId,Quantity")] CartItem cartItem)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Price")] Merch merch)
         {
-            if (id != cartItem.CartItemId)
+            if (id != merch.Id)
             {
                 return NotFound();
             }
@@ -97,12 +97,12 @@ namespace BasketballStore.Controllers
             {
                 try
                 {
-                    _context.Update(cartItem);
+                    _context.Update(merch);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CartItemExists(cartItem.CartItemId))
+                    if (!MerchExists(merch.Id))
                     {
                         return NotFound();
                     }
@@ -113,10 +113,10 @@ namespace BasketballStore.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(cartItem);
+            return View(merch);
         }
 
-        // GET: Cart/Delete/5
+        // GET: Merches/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,34 +124,36 @@ namespace BasketballStore.Controllers
                 return NotFound();
             }
 
-            var cartItem = await _context.CartItems
-                .FirstOrDefaultAsync(m => m.CartItemId == id);
-            if (cartItem == null)
+            var merch = await _context.Merch
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (merch == null)
             {
                 return NotFound();
             }
 
-            return View(cartItem);
+            return View(merch);
         }
 
-        // POST: Cart/Delete/5
+        // POST: Merches/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var cartItem = await _context.CartItems.FindAsync(id);
-            if (cartItem != null)
+            var merch = await _context.Merch.FindAsync(id);
+            if (merch != null)
             {
-                _context.CartItems.Remove(cartItem);
+                _context.Merch.Remove(merch);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CartItemExists(int id)
+
+
+        private bool MerchExists(int id)
         {
-            return _context.CartItems.Any(e => e.CartItemId == id);
+            return _context.Merch.Any(e => e.Id == id);
         }
     }
 }

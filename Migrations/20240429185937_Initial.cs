@@ -5,22 +5,24 @@
 namespace BasketballStore.Migrations
 {
     /// <inheritdoc />
-    public partial class BasketballStoreDataBasketballStoreContext : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "TeamName",
+                name: "Merch",
                 columns: table => new
                 {
-                    TeamNameId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Price = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TeamName", x => x.TeamNameId);
+                    table.PrimaryKey("PK_Merch", x => x.Id);
                 });
         }
 
@@ -28,7 +30,7 @@ namespace BasketballStore.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "TeamName");
+                name: "Merch");
         }
     }
 }

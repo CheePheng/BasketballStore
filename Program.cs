@@ -1,12 +1,15 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using BasketballStore.Data;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using BasketballStore.Data;
+using BasketballStore.Models;
 
 
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<BasketballStoreContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("BasketballStoreContext") ?? throw new InvalidOperationException("Connection string 'BasketballStoreContext' not found.")));
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -20,14 +23,17 @@ builder.Services.AddAuthentication(options =>
         option.ClientSecret = builder.Configuration.GetSection("GoogleKeys:ClientSecret").Value;
     });
 
-builder.Services.AddDbContext<BasketballStoreContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("BasketballStoreContext") ?? throw new InvalidOperationException("Connection string 'BasketballStoreContext' not found.")));
-
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    SeedData.Initialize(services);
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

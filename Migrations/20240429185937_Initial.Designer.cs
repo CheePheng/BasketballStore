@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BasketballStore.Migrations
 {
     [DbContext(typeof(BasketballStoreContext))]
-    [Migration("20240427142210_Los Angeles Lakers")]
-    partial class LosAngelesLakers
+    [Migration("20240429185937_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,33 +24,28 @@ namespace BasketballStore.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("BasketballStore.Models.TeamName", b =>
+            modelBuilder.Entity("BasketballStore.Models.Merch", b =>
                 {
-                    b.Property<int>("TeamNameId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TeamNameId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("TeamNameId");
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
 
-                    b.ToTable("TeamName");
+                    b.HasKey("Id");
 
-                    b.HasData(
-                        new
-                        {
-                            TeamNameId = 1,
-                            Name = "Los Angeles Lakers"
-                        },
-                        new
-                        {
-                            TeamNameId = 2,
-                            Name = "LA Clippers"
-                        });
+                    b.ToTable("Merch");
                 });
 #pragma warning restore 612, 618
         }
