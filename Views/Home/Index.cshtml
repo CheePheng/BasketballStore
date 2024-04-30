@@ -1,4 +1,4 @@
-﻿<div class="text-center">
+﻿<div class="text-center bg-primary">
     <h1 class="display-4">Welcome To The Basketball Store</h1>
 
     <a id="microsoft-login" class="microsoft-login-btn" href="https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=3ed46488-5c04-4492-a1b3-c0b7b03d996d&response_type=code&redirect_uri=https://localhost:7200/Basketball&response_mode=query&scope=offline_access%20user.read%20mail.read&state=12345">
@@ -11,9 +11,64 @@
 
 
 <style>
-	.microsoft-login-btn, .google-login-btn {
-		text-decoration: none;
-		color: transparent;
-		display: inline-block;
-	}
+
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .display-4 {
+        font-size: 2.5rem;
+        margin-bottom: 30px;
+        color: #FFF;
+    }
+
+    .logo {
+        width: 200px;
+        height: auto;
+        margin: 20px;
+        transition: transform 0.3s ease-in-out;
+    }
+
+        .logo:hover {
+            transform: scale(1.1);
+        }
+
+    .microsoft-login-btn, .google-login-btn {
+        text-decoration: none;
+        color: transparent;
+        display: inline-block;
+    }
+
+    .bg-primary {
+        background-color: #FFA500;
+        color: #FFA500; 
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-transform: uppercase;
+        font-weight: bold;
+        transition: background-color 0.3s ease-in-out;
+    }
+
+        .bg-primary:hover {
+            background-color: #FFA500;
+        }
+
+    .basketball-image {
+        max-width: 100%;
+        height: auto;
+    }
+
 </style>
