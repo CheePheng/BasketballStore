@@ -1,8 +1,59 @@
-﻿<!-- Details.cshtml -->
-@model List<BasketballStore.Models.Team>
+﻿@model List<BasketballStore.Models.Team>
 @{
     ViewData["Title"] = "Details";
 }
+
+<style>
+    h1 {
+        color: #333;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .team-details {
+        margin-bottom: 20px;
+    }
+
+        .team-details dt {
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .team-details dd {
+            margin-left: 0;
+            margin-bottom: 10px;
+        }
+
+    .edit-link {
+        margin-top: 10px;
+        display: inline-block;
+        text-decoration: none;
+        color: #007bff;
+        font-weight: bold;
+        transition: color 0.3s ease;
+    }
+
+        .edit-link:hover {
+            color: #0056b3;
+        }
+
+    .back-link {
+        margin-top: 20px;
+        display: block;
+        text-decoration: none;
+        color: #333;
+        font-weight: bold;
+        transition: color 0.3s ease;
+    }
+
+        .back-link:hover {
+            color: #666;
+        }
+
+    .btn-create-new-team {
+        margin-top: 20px;
+    }
+</style>
 
 <h1>Team Details</h1>
 
@@ -10,34 +61,31 @@
 {
     @foreach (var team in Model)
     {
-        <div>
+        <div class="team-details">
             <dl class="row">
-                <dt class="col-sm-2">
+                <dt class="col-sm-2 team-name">
                     Team Name:
                 </dt>
-                <dd class="col-sm-10">
+                <dd class="col-sm-10 team-description">
                     @Html.DisplayFor(modelItem => team.Name)
                 </dd>
-                <dt class="col-sm-2">
+                <dt class="col-sm-2 team-name">
                     Description:
                 </dt>
-                <dd class="col-sm-10">
+                <dd class="col-sm-10 team-description">
                     @Html.DisplayFor(modelItem => team.Description)
                 </dd>
             </dl>
         </div>
         <div>
-            <a asp-action="Edit" asp-route-id="@team.TeamId">Edit</a>
-          
-
+            <a asp-action="Edit" asp-route-id="@team.TeamId" class="edit-link">Edit</a>
         </div>
-        
         <hr />
     }
-    <a asp-action="Index" asp-controller="Basketball">Back to Basketball Page</a>
-    <a asp-action="Create" class="btn btn-primary">Create New Team</a>
+    <a asp-action="Index" asp-controller="Basketball" class="back-link">Back to Basketball Page</a>
 }
 else
 {
     <p>No teams found.</p>
 }
+</html>

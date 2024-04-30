@@ -1,19 +1,83 @@
-﻿<button type="button" onclick="displayCart()" class="btn btn-secondary">View Cart</button>
+﻿@model IEnumerable<BasketballStore.Models.Merch>
 
-<div id="cartItemsContainer"></div>
-<button type="button" onclick="clearCart()" class="btn btn-danger">Clear Cart</button>
+@{
+    ViewData["Title"] = "Welcome to the merch store";
+}
+<style>
+    .container-bg {
+        background-color: #f0f0f0;
+        padding: 20px;
+    }
 
-<a asp-action="Index" class="btn btn-info">Back To Merch Store</a>
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+        color: #fff;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+        }
+
+    .btn-danger {
+        background-color: #dc3545;
+        border-color: #dc3545;
+        color: #fff;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+
+    .btn-info {
+        background-color: #007bff;
+        border-color: #007bff;
+        color: #fff;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-info:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+    #cartItemsContainer {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+        margin-top: 20px;
+    }
+
+    .cart-item {
+        margin-bottom: 10px;
+        padding: 5px;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+</style>
+
+<div class="container container-bg">
+    <h1>Welcome to the merch store</h1>
+
+    <div id="cartItemsContainer"></div>
+
+    <button type="button" onclick="clearCart()" class="btn btn-danger">Clear Cart</button>
+    <a asp-action="Index" class="btn btn-info">Back To Merch Store</a>
+</div>
+
 <script>
     function clearCart() {
         localStorage.removeItem('cartItems');
-
-        var cartItemsContainer = document.getElementById('cartItemsContainer');
-        cartItemsContainer.innerHTML = '<p>Cart is empty</p>';
+        displayCart();
     }
+
     function displayCart() {
         var cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-
         var cartItemsContainer = document.getElementById('cartItemsContainer');
 
         cartItemsContainer.innerHTML = '';
@@ -21,9 +85,8 @@
         if (cartItems.length > 0) {
             cartItems.forEach(function (item) {
                 var itemDiv = document.createElement('div');
-
+                itemDiv.classList.add('cart-item');
                 itemDiv.innerHTML = '<strong>ID:</strong> ' + item.id + ', <strong>Name:</strong> ' + item.name + ', <strong>Price:</strong> ' + item.price;
-
                 cartItemsContainer.appendChild(itemDiv);
             });
         } else {
@@ -31,36 +94,6 @@
         }
     }
 
-    function placeOrder() {
-        let cartItems = JSON.parse(localStorage.getItem('cartItems'));
-
-        // Check if there are items in the cart
-        if (cartItems && cartItems.length > 0) {
-            // Send a request to the server to place the order
-            fetch('/Orders/Create', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(cartItems)
-            })
-                .then(response => {
-                    if (response.ok) {
-                        // If the order was successfully placed, clear the cart items from local storage
-                        localStorage.removeItem('cartItems');
-                        alert('Order placed successfully.');
-                    } else {
-                        alert('Failed to place order.');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error placing order:', error);
-                    alert('An error occurred while placing the order.');
-                });
-        } else {
-            alert('Cart is empty. Please add items before placing an order.');
-        }
-    }
-
-
+    // Display cart on page load
+    displayCart();
 </script>

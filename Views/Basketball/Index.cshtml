@@ -1,97 +1,142 @@
-﻿<!-- Index.cshtml -->
+﻿@model IEnumerable<BasketballStore.Models.Merch>
+
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Welcome to the merch store";
 }
 <style>
-    .card-team {
-        background-color: #ffd700;
-        border-radius: 10px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    .container-bg {
+        background-color: #f0f0f0;
+        padding: 20px;
     }
 
-        .card-team .card-header {
-            background-color: #000080;
-            border-radius: 10px 10px 0 0;
-            color: #fff;
-        }
-
+    .card-team,
     .card-weather {
-        background-color: #ffa07a;
+        background-color: #fff;
         border-radius: 10px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
     }
 
-        .card-weather .card-header {
-            background-color: #228b22;
-            border-radius: 10px 10px 0 0;
-            color: #fff;
+    .card-header {
+        background-color: #007bff;
+        border-radius: 10px 10px 0 0;
+        color: #fff;
+        padding: 15px;
+    }
+
+    .btn-primary {
+        background-color: #ffc107;
+        border-color: #ffc107;
+        color: #212529;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-primary:hover {
+            background-color: #ffb400;
+            border-color: #ffb400;
         }
 
-    .btn-logout {
-        background-color: #ff4500;
-        border-color: #ff4500;
+    .btn-danger {
+        background-color: #dc3545;
+        border-color: #dc3545;
         color: #fff;
         transition: background-color 0.3s ease;
     }
 
-        .btn-logout:hover {
-            background-color: #dc143c;
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
         }
+
+    .cart-logo {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+    }
+
+        .cart-logo img {
+            margin-right: 5px;
+        }
+
+    .cart-count {
+        background-color: red;
+        color: white;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        font-size: 12px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 </style>
 
-<div class="container mt-5 card-team card-header">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header bg-primary text-white">
-                    <h3 class="card-title">Basketball Team</h3>
-                </div>
-                <div class="card-body">
-                    <h4 class="card-text">Click to view basketball team details</h4>
-                    <a asp-action="Details" asp-controller="Basketball" class="btn btn-primary">View Team Details</a>
+<div class="container container-bg">
+    <h1>Welcome to the merch store</h1>
+
+    <div class="cart-logo" onclick="location.href='@Url.Action("Cart", "Merches")'">
+        <img src="~/images/cartlogo.png" alt="Cart" width="40" height="40">
+        <div id="cartCount" class="cart-count">0</div>
+    </div>
+
+    <div class="card card-team">
+        <div class="card-header">
+            <h3 class="card-title">Basketball Team</h3>
+        </div>
+        <div class="card-body">
+            <h4 class="card-text">Click to view basketball team details</h4>
+            <a asp-action="Details" asp-controller="Basketball" class="btn btn-primary">View Team Details</a>
+        </div>
+    </div>
+
+    <div class="card card-weather">
+        <div class="card-header">
+            <h3 class="card-title">Current Weather</h3>
+        </div>
+        <div class="card-body">
+            @if (ViewBag.CityName != null)
+            {
+                <h4 class="card-subtitle mb-2">@ViewBag.CityName</h4>
+                @if (ViewBag.WeatherIcon != null)
+                {
+                    <img src="@ViewBag.WeatherIcon" alt="Weather Icon">
+                }
+                <p class="card-text">@ViewBag.WeatherDescription</p>
+            }
+            else
+            {
+                <p class="card-text text-danger">@ViewBag.Error</p>
+            }
+        </div>
+    </div>
+
+    @if (Context.User.Identity.IsAuthenticated)
+    {
+        <div class="container mt-5">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <h3 class="text-center">Welcome @User.Identity.Name</h3>
+                    <div class="text-center">
+                        <a asp-controller="Basketball" asp-action="Logout" class="btn btn-danger">Logout</a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    }
 </div>
 
-<div class="container mt-5 card-weather card-header">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card mt-5">
-                <div class="card-header bg-primary text-white">
-                    <h3 class="card-title">Current Weather</h3>
-                </div>
-                <div class="card-body">
-                    @if (ViewBag.CityName != null)
-                    {
-                        <h4 class="card-subtitle mb-2">@ViewBag.CityName</h4>
-                        @if (ViewBag.WeatherIcon != null)
-                        {
-                            <img src="@ViewBag.WeatherIcon" alt="Weather Icon">
-                        }
-                        <p class="card-text">@ViewBag.WeatherDescription</p>
-                    }
-                    else
-                    {
-                        <p class="card-text text-danger">@ViewBag.Error</p>
-                    }
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<script>
+    function updateCartCount() {
+        var cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+        var cartCount = document.getElementById('cartCount');
 
-@if (Context.User.Identity.IsAuthenticated)
-{
-    <div class="container mt-5 btn-logout">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <h3 class="text-center">Welcome @User.Identity.Name</h3>
-                <div class="text-center">
-                    <a asp-controller="Basketball" asp-action="Logout" class="btn btn-danger">Logout</a>
-                </div>
-            </div>
-        </div>
-    </div>
-}
+        if (cartCount) {
+            cartCount.textContent = cartItems.length;
+        }
+    }
+
+    updateCartCount();
+</script>

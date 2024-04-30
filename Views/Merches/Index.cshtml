@@ -4,23 +4,83 @@
     ViewData["Title"] = "Welcome to the merch store";
 }
 <style>
-    /* Style for cart logo */
     .cart-logo {
         position: fixed;
         top: 10px;
         right: 10px;
         cursor: pointer;
     }
+
+        .cart-logo img {
+            display: block;
+            margin: 0 auto;
+        }
+
+    .cart-count {
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        background-color: red;
+        color: white;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        font-size: 12px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    h1 {
+        color: #333;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th,
+    td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #007bff;
+        color: black;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    td {
+        vertical-align: middle;
+    }
+
+    .btn-add-to-cart {
+        background-color: #28a745;
+        border-color: #28a745;
+        color: #fff;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-add-to-cart:hover {
+            background-color: #218838;
+        }
 </style>
 
 <h1>Welcome to the merch store</h1>
 
 <div class="cart-logo" onclick="location.href='@Url.Action("Cart", "Merches")'">
     <img src="~/images/cartlogo.png" alt="Cart" width="40" height="40">
+    <div id="cartCount" class="cart-count">0</div>
 </div>
-<p>
-    <a asp-action="Create" class="btn btn-info">Create New</a>
-</p>
+
 <table class="table">
     <thead>
         <tr>
@@ -50,13 +110,15 @@
                     @Html.DisplayFor(modelItem => item.Price)
                 </td>
                 <td>
-                    <button type="button" class="btn btn-primary" onclick="addToCart('@item.Id', '@item.Name', '@item.Price')">Add to Cart</button>
+                    <button type="button" class="btn-add-to-cart" onclick="addToCart('@item.Id', '@item.Name', '@item.Price')">Add to Cart</button>
                 </td>
             </tr>
         }
     </tbody>
 </table>
-
+<p>
+    <a asp-action="Create" class="btn btn-info">Create New</a>
+</p>
 <script>
     function addToCart(id, name, price) {
         var cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
@@ -71,6 +133,18 @@
 
         localStorage.setItem('cartItems', JSON.stringify(cartItems));
 
+        updateCartCount();
         alert('Item added to cart!');
     }
+
+    function updateCartCount() {
+        var cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+        var cartCount = document.getElementById('cartCount');
+
+        if (cartCount) {
+            cartCount.textContent = cartItems.length;
+        }
+    }
+
+    updateCartCount();
 </script>
